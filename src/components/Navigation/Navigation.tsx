@@ -1,5 +1,3 @@
-import React from "react";
-
 function Navigation() {
   return (
     <nav style={{ display: "flex", justifyContent: "flex-end" }}>
