@@ -5,7 +5,7 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import { BaseSyntheticEvent, Component } from "react";
-import FaceRecogition from "./components/FaceRecogition/FaceRecogition";
+import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 
 const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
 const MODEL_ID = "face-detection";
@@ -15,8 +15,27 @@ class App extends Component<any, any> {
     this.state = {
       input: "",
       imageUrl: "",
+      box: {},
     };
   }
+
+  calculateFaceLocation = (data: any) => {
+    const clarifaiFace =
+      data?.outputs[0]?.data?.regions[0]?.region_info?.bounding_box;
+    const image: any = document.getElementById("input-image");
+    const width = Number(image?.width);
+    const height = Number(image?.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - clarifaiFace.right_col * width,
+      bottomRow: height - clarifaiFace.bottom_row * height,
+    };
+  };
+
+  displayFaceBox = (box: any) => {
+    this.setState({ box });
+  };
 
   getClarifiRequestOptions = (imageUrl: string) => {
     const PAT = "81c8f0e2c9a84ab7b8fca1e0d4dd0b75";
@@ -63,9 +82,7 @@ class App extends Component<any, any> {
       );
 
       const result = await response.json();
-      console.log(
-        result?.outputs[0]?.data?.regions[0]?.region_info?.bounding_box
-      );
+      this.displayFaceBox(this.calculateFaceLocation(result));
     } catch (error) {
       console.log(error);
     }
@@ -83,7 +100,10 @@ class App extends Component<any, any> {
           onSubmit={this.onSubmit}
         />
         {this.state.imageUrl && (
-          <FaceRecogition imageUrl={this.state.imageUrl} />
+          <FaceRecognition
+            box={this.state.box}
+            imageUrl={this.state.imageUrl}
+          />
         )}
       </div>
     );
