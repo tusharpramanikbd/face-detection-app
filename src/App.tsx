@@ -7,6 +7,7 @@ import ParticlesBg from "particles-bg";
 import { BaseSyntheticEvent, Component } from "react";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import SignIn from "./components/SignIn/SignIn";
+import Register from "./components/Register/Register";
 
 const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
 const MODEL_ID = "face-detection";
@@ -95,17 +96,13 @@ class App extends Component<any, any> {
   };
 
   render() {
+    const { route, box, imageUrl } = this.state;
     return (
       <div className="App">
         <ParticlesBg type="cobweb" bg={true} />
-        <Navigation
-          onRouteChange={this.onRouteChange}
-          route={this.state.route}
-        />
+        <Navigation onRouteChange={this.onRouteChange} route={route} />
 
-        {this.state.route === "signin" ? (
-          <SignIn onRouteChange={this.onRouteChange} />
-        ) : (
+        {this.state.route === "home" ? (
           <>
             <Logo />
             <Rank />
@@ -113,13 +110,12 @@ class App extends Component<any, any> {
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
             />
-            {this.state.imageUrl && (
-              <FaceRecognition
-                box={this.state.box}
-                imageUrl={this.state.imageUrl}
-              />
-            )}
+            {imageUrl && <FaceRecognition box={box} imageUrl={imageUrl} />}
           </>
+        ) : route === "signin" ? (
+          <SignIn onRouteChange={this.onRouteChange} />
+        ) : (
+          <Register onRouteChange={this.onRouteChange} />
         )}
       </div>
     );
