@@ -6,6 +6,7 @@ import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import { BaseSyntheticEvent, Component } from "react";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
+import SignIn from "./components/SignIn/SignIn";
 
 const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
 const MODEL_ID = "face-detection";
@@ -93,6 +94,7 @@ class App extends Component<any, any> {
       <div className="App">
         <ParticlesBg type="cobweb" bg={true} />
         <Navigation />
+        <SignIn />
         <Logo />
         <Rank />
         <ImageLinkForm
