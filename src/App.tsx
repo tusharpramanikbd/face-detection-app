@@ -17,6 +17,7 @@ class App extends Component<any, any> {
       input: "",
       imageUrl: "",
       box: {},
+      route: "signin",
     };
   }
 
@@ -89,23 +90,36 @@ class App extends Component<any, any> {
     }
   };
 
+  onRouteChange = (route: string) => {
+    this.setState({ route: route });
+  };
+
   render() {
     return (
       <div className="App">
         <ParticlesBg type="cobweb" bg={true} />
-        <Navigation />
-        <SignIn />
-        <Logo />
-        <Rank />
-        <ImageLinkForm
-          onInputChange={this.onInputChange}
-          onSubmit={this.onSubmit}
+        <Navigation
+          onRouteChange={this.onRouteChange}
+          route={this.state.route}
         />
-        {this.state.imageUrl && (
-          <FaceRecognition
-            box={this.state.box}
-            imageUrl={this.state.imageUrl}
-          />
+
+        {this.state.route === "signin" ? (
+          <SignIn onRouteChange={this.onRouteChange} />
+        ) : (
+          <>
+            <Logo />
+            <Rank />
+            <ImageLinkForm
+              onInputChange={this.onInputChange}
+              onSubmit={this.onSubmit}
+            />
+            {this.state.imageUrl && (
+              <FaceRecognition
+                box={this.state.box}
+                imageUrl={this.state.imageUrl}
+              />
+            )}
+          </>
         )}
       </div>
     );

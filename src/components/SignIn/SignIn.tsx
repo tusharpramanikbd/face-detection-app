@@ -1,4 +1,8 @@
-function SignIn() {
+type Props = {
+  onRouteChange: (route: string) => void;
+};
+
+function SignIn({ onRouteChange }: Props) {
   return (
     <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
       <main className="pa4 black-80">
@@ -30,6 +34,7 @@ function SignIn() {
           </fieldset>
           <div className="">
             <input
+              onClick={() => onRouteChange("home")}
               className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
               type="submit"
               value="Sign in"
